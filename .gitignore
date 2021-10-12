@@ -1,0 +1,8 @@
+Downloadables/*
+
+Source/BeamCalc/.vs*
+Source/BeamCalc/packages/*
+
+Source/BeamCalc/BeamCalc/bin/*
+Source/BeamCalc/BeamCalc/obj/*
+Source/BeamCalc/BeamCalc/Properties/*
