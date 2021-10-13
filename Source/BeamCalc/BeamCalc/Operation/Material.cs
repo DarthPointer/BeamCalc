@@ -16,6 +16,7 @@ namespace BeamCalc.Operation
         const string stressLimit = "StessLim";
 
         Dictionary<string, Action<MaterialDataStorage, List<string>>> modes;
+        Dictionary<string, Action<MaterialDataStorage, string, List<string>>> materialChangers;
 
         public Material()
         {
@@ -24,6 +25,13 @@ namespace BeamCalc.Operation
                 { create, Create },
                 { change, Change },
                 { delete, Delete }
+            };
+
+            materialChangers = new Dictionary<string, Action<MaterialDataStorage, string, List<string>>>()
+            {
+                { name, Rename },
+                { elasticModulus, ChangeElasticModulus },
+                { stressLimit, ChangeStressLimit }
             };
         }
 
@@ -108,7 +116,16 @@ namespace BeamCalc.Operation
                 if (!MandatoryArgumentPresense(args, "parameter to change")) return;
                 string parameterToChange = args.TakeArg();
 
-
+                if (materialChangers.ContainsKey(parameterToChange))
+                {
+                    materialChangers[parameterToChange](storage, existingMaterialName, args);
+                    return;
+                }
+                else
+                {
+                    Program.AddError($"Unknown parameter to change specified: {parameterToChange}. Need {name}|{elasticModulus}|{stressLimit}.");
+                    return;
+                }
             }
             else
             {
@@ -118,6 +135,21 @@ namespace BeamCalc.Operation
         }
 
         void Delete(MaterialDataStorage storage, List<string> args)
+        {
+        }
+        #endregion
+
+        #region Material Changers
+        void Rename(MaterialDataStorage storage, string existingMaterialName, List<string> args)
+        {
+
+        }
+
+        void ChangeElasticModulus(MaterialDataStorage storage, string existingMaterialName, List<string> args)
+        {
+        }
+
+        void ChangeStressLimit(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
         }
         #endregion
