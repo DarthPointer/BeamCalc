@@ -24,7 +24,26 @@ namespace BeamCalc.Operation
             }
             else
             {
-                Program.runData.operationReports.AddError($"Command lacks a mandatory \"{argumentName}\" argument. Abandoned.");
+                Program.AddError($"Command lacks a mandatory \"{argumentName}\" argument.");
+                return false;
+            }
+        }
+
+        protected static bool TakeMandatoryFloatFromArgs(List<string> args, out float result, string argumentName)
+        {
+            result = -1;
+
+            if (!MandatoryArgumentPresense(args, argumentName)) return false;
+
+            string arg0 = args.TakeArg();
+
+            if (float.TryParse(arg0, out result))
+            {
+                return true;
+            }
+            else
+            {
+                Program.AddError($"Can not parse \"{arg0}\" as a float for argument \"{argumentName}\".");
                 return false;
             }
         }

@@ -53,6 +53,7 @@
     <Compile Include="Operation\AbstractOperation.cs" />
     <Compile Include="Operation\Help.cs" />
     <Compile Include="Operation\LoadMaterialDataStorage.cs" />
+    <Compile Include="Operation\Material.cs" />
     <Compile Include="Operation\OperationKeys.cs" />
     <Compile Include="Operation\Save.cs" />
     <Compile Include="Program.cs" />

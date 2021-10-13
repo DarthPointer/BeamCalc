@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using BeamCalc.Operation;
+using BeamCalc.Project;
 
 namespace BeamCalc
 {
@@ -19,7 +18,9 @@ namespace BeamCalc
             { "Help", new Help() },
 
             { "CreateMaterialDataStorage", new CreateMaterialDataStorage() },
-            { "LoadMaterialDataStorage", new LoadMaterialDataStorage() }
+            { "LoadMaterialDataStorage", new LoadMaterialDataStorage() },
+
+            { "Material", new Material() }
         };
 
         static void Main(string[] args)
@@ -80,6 +81,28 @@ namespace BeamCalc
 
             return false;
         }
+
+        public static bool TryGetActiveMaterialDataStorage(out MaterialDataStorage result)          // Returns true if succeeded.
+        {
+            if (runData.materialDataStorage != null)
+            {
+                result = runData.materialDataStorage;
+                return true;
+            }
+
+            if (runData.project != null)
+            {
+                if (runData.project.materialDataStorage != null)
+                {
+                    result = runData.project.materialDataStorage;
+                    return true;
+                }
+            }
+
+            result = null;
+            return false;
+        }
+
 
         public static void AddNote(string message)
         {
