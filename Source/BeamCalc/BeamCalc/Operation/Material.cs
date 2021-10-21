@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using BeamCalc.Project;
 
@@ -95,7 +96,7 @@ namespace BeamCalc.Operation
                     stressLimit = stressLimit
                 });
 
-                Console.WriteLine($"Successfully added a new {materialName} material");
+                Console.WriteLine($"Successfully created a new {materialName} material");
                 return;
             }
             else
@@ -136,21 +137,70 @@ namespace BeamCalc.Operation
 
         void Delete(MaterialDataStorage storage, List<string> args)
         {
+            if (!MandatoryArgumentPresense(args, "existing material name")) return;
+
+            string existingMaterialName = args.TakeArg();
+
+            if (storage.materials.ContainsKey(existingMaterialName))
+            {
+                storage.materials.Remove(existingMaterialName);
+
+                Program.runData.unsavedChanges = true;
+
+                Console.WriteLine($"Successfully deleted material {existingMaterialName}.");
+            }
+            else
+            {
+                Program.AddError($"Material {existingMaterialName} does not exist. Make sure you typed material name correctly and material exists.");
+                return;
+            }
         }
         #endregion
 
         #region Material Changers
         void Rename(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
+            if (!MandatoryArgumentPresense(args, "new material name")) return;
 
+            string newMaterialName = args.TakeArg();
+
+            if (storage.materials.ContainsKey(newMaterialName))
+            {
+                Program.AddError($"Material \"{newMaterialName}\" already exisits. Use a different new material name or {delete} {newMaterialName} first.");
+                return;
+            }
+            else
+            {
+                storage.materials[newMaterialName] = storage.materials[existingMaterialName];
+                storage.materials.Remove(existingMaterialName);
+
+                Program.runData.unsavedChanges = true;
+
+                Console.WriteLine($"Successfully renamed material to {newMaterialName}.");
+            }
         }
 
         void ChangeElasticModulus(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
+            if (!TakeMandatoryFloatFromArgs(args, out float newElasticModulus, "new elastic modulus")) return;
+
+            storage.materials[existingMaterialName].elasticModulus = newElasticModulus;
+
+            Program.runData.unsavedChanges = true;
+
+            Console.WriteLine($"Successfully set new elastic modulus for {existingMaterialName} material.");
         }
+
 
         void ChangeStressLimit(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
+            if (!TakeMandatoryFloatFromArgs(args, out float newStressLimit, "new stress limit")) return;
+
+            storage.materials[existingMaterialName].stressLimit = newStressLimit;
+
+            Program.runData.unsavedChanges = true;
+
+            Console.WriteLine($"Successfully set new stress limit for {existingMaterialName} material.");
         }
         #endregion
     }

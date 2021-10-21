@@ -17,10 +17,15 @@ namespace BeamCalc
 
             { "Help", new Help() },
 
+            { "CreateProject", new CreateProject() },
+            { "LoadProject", new LoadProject() },
+
             { "CreateMaterialDataStorage", new CreateMaterialDataStorage() },
             { "LoadMaterialDataStorage", new LoadMaterialDataStorage() },
 
-            { "Material", new Material() }
+            { "Material", new Material() },
+
+            { "PrintMaterials", new PrintMaterials() }
         };
 
         static void Main(string[] args)
@@ -49,8 +54,7 @@ namespace BeamCalc
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.GetType());
-                            Console.WriteLine(e.StackTrace);
+                            Console.WriteLine(e.ToString());
                         }
                     }
                     else

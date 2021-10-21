@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace BeamCalc.Project
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    class MaterialDataStorage
+    class MaterialDataStorage : SavableProjectElement
     {
         #region Fields
         public string filePath;
@@ -17,6 +17,8 @@ namespace BeamCalc.Project
         [JsonProperty]
         public Dictionary<string, MaterialData> materials;
         #endregion
+
+        protected override string SavableProjectElementTypeKey => "MaterialDataStorage";
 
 
         #region Ctors
@@ -52,6 +54,11 @@ namespace BeamCalc.Project
             });
 
             result.filePath = filePath;
+
+            if (!result.ValidateSavableProjectElementType())
+            {
+                throw new Exception($"Unexpected savable project elemet type encountered: {result.loadedSavableProjectElementTypeKey}");
+            }
 
             return result;
         }

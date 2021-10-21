@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace BeamCalc.Project
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    class ProjectData
+    class ProjectData : SavableProjectElement
     {
         public string filePath;
         public string folder;
@@ -19,8 +19,23 @@ namespace BeamCalc.Project
         [JsonProperty]
         public string relativeMaterialDataStoragePath;
 
+        protected override string SavableProjectElementTypeKey => "ProjectData";
+
+
+        public ProjectData() { }
+
+        public ProjectData(string filePath) : this()             // Only to create new storages. For filesaves, use LoadFromFile instead.
+        {
+            this.filePath = filePath;
+        }
+
+
         public void Save()
         {
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(this, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            }));
         }
 
         #region statics
@@ -31,7 +46,19 @@ namespace BeamCalc.Project
             result.filePath = filePath;
             result.folder = filePath.Substring(0, filePath.LastIndexOf('/') + 1);
 
-            result.materialDataStorage = MaterialDataStorage.LoadFromFile(result.folder + result.relativeMaterialDataStoragePath);
+            if (File.Exists(result.folder + result.relativeMaterialDataStoragePath))
+            {
+                result.materialDataStorage = MaterialDataStorage.LoadFromFile(result.folder + result.relativeMaterialDataStoragePath);
+            }
+            else
+            {
+                result.relativeMaterialDataStoragePath = "";
+            }
+
+            if (!result.ValidateSavableProjectElementType())
+            {
+                throw new Exception($"Unexpected savable project elemet type encountered: {result.loadedSavableProjectElementTypeKey}");
+            }
 
             return result;
         }
