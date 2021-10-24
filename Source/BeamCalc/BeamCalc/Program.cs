@@ -13,6 +13,7 @@ namespace BeamCalc
         {
             { "Exit", new Exit() },
             { "Save", new Save() },
+            { "Validate", new Validate() },
 
             { "Help", new Help() },
 
