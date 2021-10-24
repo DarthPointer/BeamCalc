@@ -19,6 +19,7 @@ namespace BeamCalc.Operation
             };
         }
 
+
         public override bool Execute(List<string> args)
         {
             args.TakeArg();

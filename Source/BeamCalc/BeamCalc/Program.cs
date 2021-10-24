@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-using BeamCalc.Operation;
+﻿using BeamCalc.Operation;
 using BeamCalc.Project;
+using System;
+using System.Collections.Generic;
 
 namespace BeamCalc
 {
@@ -20,12 +19,19 @@ namespace BeamCalc
             { "CreateProject", new CreateProject() },
             { "LoadProject", new LoadProject() },
 
+            { "Node", new Node() },
+            { "Beam", new Beam() },
+
             { "CreateMaterialDataStorage", new CreateMaterialDataStorage() },
             { "LoadMaterialDataStorage", new LoadMaterialDataStorage() },
 
+            { "BindMaterialDataStorage", new BindMaterialDataStorage() },
+
             { "Material", new Material() },
 
-            { "PrintMaterials", new PrintMaterials() }
+            { "PrintMaterials", new PrintMaterials() },
+            { "PrintNodes", new PrintNodes() },
+            { "PrintBeams", new PrintBeams() }
         };
 
         static void Main(string[] args)
@@ -101,6 +107,18 @@ namespace BeamCalc
                     result = runData.project.materialDataStorage;
                     return true;
                 }
+            }
+
+            result = null;
+            return false;
+        }
+
+        public static bool TryGetActiveProject(out ProjectData result)
+        {
+            if (runData.project != null)
+            {
+                result = runData.project;
+                return true;
             }
 
             result = null;

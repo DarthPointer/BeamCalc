@@ -1,8 +1,7 @@
-﻿using System;
+﻿using BeamCalc.Project;
+using System;
 using System.Collections.Generic;
 using System.IO;
-
-using BeamCalc.Project;
 
 namespace BeamCalc.Operation
 {
@@ -50,11 +49,12 @@ namespace BeamCalc.Operation
             {
                 Program.runData.materialDataStorage = MaterialDataStorage.LoadFromFile(filePath);
             }
-            catch
+            catch (Exception e)
             {
                 Program.AddError("An exception arised in the process of loading a material data storage.");
+                Program.AddError(e.Message);
 
-                throw;
+                return true;
             }
 
             Program.runData.unsavedChanges = false;

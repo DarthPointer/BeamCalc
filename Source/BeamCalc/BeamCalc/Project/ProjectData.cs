@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace BeamCalc.Project
 {
@@ -19,10 +15,23 @@ namespace BeamCalc.Project
         [JsonProperty]
         public string relativeMaterialDataStoragePath;
 
+        [JsonProperty]
+        public Dictionary<string, NodeData> nodes;
+
+        [JsonProperty]
+        public Dictionary<string, BeamData> beams;
+
+
+        public override string UserFriendlyName => "project";
+
         protected override string SavableProjectElementTypeKey => "ProjectData";
 
 
-        public ProjectData() { }
+        public ProjectData() 
+        {
+            nodes = new Dictionary<string, NodeData>();
+            beams = new Dictionary<string, BeamData>();
+        }
 
         public ProjectData(string filePath) : this()             // Only to create new storages. For filesaves, use LoadFromFile instead.
         {
@@ -36,6 +45,14 @@ namespace BeamCalc.Project
             {
                 Formatting = Formatting.Indented
             }));
+
+            if (materialDataStorage != null) materialDataStorage.Save();
+        }
+
+        public void BindMaterialDataStorage(MaterialDataStorage storage, string relativePath)
+        {
+            materialDataStorage = storage;
+            relativeMaterialDataStoragePath = relativePath;
         }
 
         #region statics
@@ -55,10 +72,7 @@ namespace BeamCalc.Project
                 result.relativeMaterialDataStoragePath = "";
             }
 
-            if (!result.ValidateSavableProjectElementType())
-            {
-                throw new Exception($"Unexpected savable project elemet type encountered: {result.loadedSavableProjectElementTypeKey}");
-            }
+            result.ThrowIfInvalidSavalbeProjectElementType();
 
             return result;
         }

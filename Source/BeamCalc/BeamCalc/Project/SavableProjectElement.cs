@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace BeamCalc.Project
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     abstract class SavableProjectElement
     {
+        public abstract string UserFriendlyName { get; }
+
         protected abstract string SavableProjectElementTypeKey { get; }
 
         [JsonProperty]
@@ -25,6 +26,14 @@ namespace BeamCalc.Project
         protected bool ValidateSavableProjectElementType()
         {
             return loadedSavableProjectElementTypeKey == SavableProjectElementTypeKey;
+        }
+
+        protected void ThrowIfInvalidSavalbeProjectElementType()
+        {
+            if (!ValidateSavableProjectElementType())
+            {
+                throw new Exception($"Unexpected savable project elemet type encountered: {loadedSavableProjectElementTypeKey}.");
+            }
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using BeamCalc.Project;
+using System;
 using System.Collections.Generic;
 using System.IO;
-
-using BeamCalc.Project;
 
 
 namespace BeamCalc.Operation
@@ -51,11 +50,12 @@ namespace BeamCalc.Operation
             {
                 Program.runData.project = ProjectData.LoadFromFile(filePath);
             }
-            catch
+            catch (Exception e)
             {
                 Program.AddError("An exception arised in the process of loading a project.");
+                Program.AddError(e.Message);
 
-                throw;
+                return true;
             }
 
             Program.runData.unsavedChanges = false;

@@ -1,34 +1,18 @@
-﻿using System;
+﻿using BeamCalc.Project;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-
-using BeamCalc.Project;
 
 namespace BeamCalc.Operation
 {
-    class Material : AbstractOperation
+    class Material : AbstractElementOperation<MaterialDataStorage, MaterialData>
     {
-        const string create = "Create";
-        const string change = "Change";
-        const string delete = "Delete";
-
         const string name = "Name";
         const string elasticModulus = "Elastic";
         const string stressLimit = "StessLim";
 
-        Dictionary<string, Action<MaterialDataStorage, List<string>>> modes;
-        Dictionary<string, Action<MaterialDataStorage, string, List<string>>> materialChangers;
-
-        public Material()
+        public Material() : base()
         {
-            modes = new Dictionary<string, Action<MaterialDataStorage, List<string>>>()
-            {
-                { create, Create },
-                { change, Change },
-                { delete, Delete }
-            };
-
-            materialChangers = new Dictionary<string, Action<MaterialDataStorage, string, List<string>>>()
+            changers = new Dictionary<string, Action<MaterialDataStorage, string, List<string>>>()
             {
                 { name, Rename },
                 { elasticModulus, ChangeElasticModulus },
@@ -36,61 +20,36 @@ namespace BeamCalc.Operation
             };
         }
 
-        public override bool Execute(List<string> args)
+
+        protected override string UserFreindlyElementName => "material";
+
+        protected override bool TryGetElementHolder(out MaterialDataStorage result)
         {
-            args.TakeArg();
-
-            if (Program.TryGetActiveMaterialDataStorage(out MaterialDataStorage storage))
-            {
-                if (!MandatoryArgumentPresense(args, $"mode ({create}|{change}|{delete})")) return true;
-                string mode = args.TakeArg();
-
-                if (modes.ContainsKey(mode))
-                {
-                    modes[mode](storage ,args);
-                }
-                else
-                {
-                    Program.AddError($"Unknown mode \"{mode}\".");
-                    return true;
-                }
-            }
-            else
-            {
-                Program.AddError("No material data storage opened. Nothing was opened or a project has no storage linked.");
-                return true;
-            }
-
-            return true;
+            return Program.TryGetActiveMaterialDataStorage(out result);
         }
 
-        public override string BasicHelpResponse => 
-            $"Creates, changes or deletes a material definition in the opened file.\n" +
-            $"\n" +
-            $"Usage:\n" +
-            $"Material {create} name {'{'}elastic modulus{'}'} {'{'}stress limit{'}'}: Creates new material definition.\n" +
-            $"\n" +
-            $"Material {change} name {name}|{elasticModulus}|{stressLimit} {'{'}new value{'}'}: Sets new name, elastic modulus or stress limit value.\n" +
-            $"\n" +
-            $"Material {delete} name: Deletes material with specified name.";
+        protected override Dictionary<string, MaterialData> GetElementsDictFromHolder(MaterialDataStorage holder)
+        {
+            return holder.materials;
+        }
 
         #region Modes
-        void Create(MaterialDataStorage storage, List<string> args)
+        protected override void Create(MaterialDataStorage holder, List<string> args)
         {
             if (!MandatoryArgumentPresense(args, "material name")) return;
 
             string materialName = args.TakeArg();
 
-            if (!TakeMandatoryFloatFromArgs(args, out float elasticModulus, "elastic modulus")) return;
+            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float elasticModulus, "elastic modulus")) return;
 
-            if (!TakeMandatoryFloatFromArgs(args, out float stressLimit, "stress limit")) return;
+            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float stressLimit, "stress limit")) return;
 
 
-            if (!storage.materials.ContainsKey(materialName))
+            if (!holder.materials.ContainsKey(materialName))
             {
                 Program.runData.unsavedChanges = true;
 
-                storage.materials.Add(materialName, new MaterialData()
+                holder.materials.Add(materialName, new MaterialData()
                 {
                     elasticModulus = elasticModulus,
                     stressLimit = stressLimit
@@ -106,44 +65,15 @@ namespace BeamCalc.Operation
             }
         }
 
-        void Change(MaterialDataStorage storage, List<string> args)
+        protected override void Delete(MaterialDataStorage holder, List<string> args)
         {
             if (!MandatoryArgumentPresense(args, "existing material name")) return;
 
             string existingMaterialName = args.TakeArg();
 
-            if (storage.materials.ContainsKey(existingMaterialName))
+            if (holder.materials.ContainsKey(existingMaterialName))
             {
-                if (!MandatoryArgumentPresense(args, "parameter to change")) return;
-                string parameterToChange = args.TakeArg();
-
-                if (materialChangers.ContainsKey(parameterToChange))
-                {
-                    materialChangers[parameterToChange](storage, existingMaterialName, args);
-                    return;
-                }
-                else
-                {
-                    Program.AddError($"Unknown parameter to change specified: {parameterToChange}. Need {name}|{elasticModulus}|{stressLimit}.");
-                    return;
-                }
-            }
-            else
-            {
-                Program.AddError($"Material {existingMaterialName} does not exist. Make sure you typed material name correctly and material exists.");
-                return;
-            }
-        }
-
-        void Delete(MaterialDataStorage storage, List<string> args)
-        {
-            if (!MandatoryArgumentPresense(args, "existing material name")) return;
-
-            string existingMaterialName = args.TakeArg();
-
-            if (storage.materials.ContainsKey(existingMaterialName))
-            {
-                storage.materials.Remove(existingMaterialName);
+                holder.materials.Remove(existingMaterialName);
 
                 Program.runData.unsavedChanges = true;
 
@@ -182,7 +112,7 @@ namespace BeamCalc.Operation
 
         void ChangeElasticModulus(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
-            if (!TakeMandatoryFloatFromArgs(args, out float newElasticModulus, "new elastic modulus")) return;
+            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newElasticModulus, "new elastic modulus")) return;
 
             storage.materials[existingMaterialName].elasticModulus = newElasticModulus;
 
@@ -194,7 +124,7 @@ namespace BeamCalc.Operation
 
         void ChangeStressLimit(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
-            if (!TakeMandatoryFloatFromArgs(args, out float newStressLimit, "new stress limit")) return;
+            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newStressLimit, "new stress limit")) return;
 
             storage.materials[existingMaterialName].stressLimit = newStressLimit;
 
@@ -203,5 +133,15 @@ namespace BeamCalc.Operation
             Console.WriteLine($"Successfully set new stress limit for {existingMaterialName} material.");
         }
         #endregion
+
+        public override string BasicHelpResponse =>
+            $"Creates, changes or deletes a material definition in the opened material data storage file.\n" +
+            $"\n" +
+            $"Usage:\n" +
+            $"Material {create} name ElasticModulus StressLimit: Creates new material definition.\n" +
+            $"\n" +
+            $"Material {change} name {name}|{elasticModulus}|{stressLimit} NewValue: Sets new name, elastic modulus or stress limit value.\n" +
+            $"\n" +
+            $"Material {delete} name: Deletes material with specified name.";
     }
 }
