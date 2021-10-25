@@ -32,7 +32,9 @@ namespace BeamCalc
 
             { "PrintMaterials", new PrintMaterials() },
             { "PrintNodes", new PrintNodes() },
-            { "PrintBeams", new PrintBeams() }
+            { "PrintBeams", new PrintBeams() },
+
+            { "PrintSystem", new PrintSystem() }
         };
 
         static void Main(string[] args)

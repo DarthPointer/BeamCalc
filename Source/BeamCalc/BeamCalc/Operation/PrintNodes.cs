@@ -36,7 +36,7 @@ namespace BeamCalc.Operation
             }
             else
             {
-                Program.AddError("No material data storage opened. Nothing was opened or a project has no storage linked.");
+                Program.AddError("No project opened.");
                 return true;
             }
         }
