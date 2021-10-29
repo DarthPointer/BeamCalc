@@ -47,7 +47,7 @@ namespace BeamCalc.Operation
 
             if (!holder.materials.ContainsKey(materialName))
             {
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 holder.materials.Add(materialName, new MaterialData()
                 {
@@ -75,7 +75,7 @@ namespace BeamCalc.Operation
             {
                 holder.materials.Remove(existingMaterialName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully deleted material {existingMaterialName}.");
             }
@@ -104,7 +104,7 @@ namespace BeamCalc.Operation
                 storage.materials[newMaterialName] = storage.materials[existingMaterialName];
                 storage.materials.Remove(existingMaterialName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully renamed material to {newMaterialName}.");
             }
@@ -116,7 +116,7 @@ namespace BeamCalc.Operation
 
             storage.materials[existingMaterialName].elasticModulus = newElasticModulus;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new elastic modulus for {existingMaterialName} material.");
         }
@@ -128,7 +128,7 @@ namespace BeamCalc.Operation
 
             storage.materials[existingMaterialName].stressLimit = newStressLimit;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new stress limit for {existingMaterialName} material.");
         }

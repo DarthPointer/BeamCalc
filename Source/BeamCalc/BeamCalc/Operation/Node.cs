@@ -42,7 +42,7 @@ namespace BeamCalc.Operation
 
             if (!holder.nodes.ContainsKey(nodeName))
             {
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 holder.nodes.Add(nodeName, new NodeData()
                 {
@@ -69,7 +69,7 @@ namespace BeamCalc.Operation
             {
                 holder.nodes.Remove(existingNodeName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully deleted node {existingNodeName}.");
             }
@@ -98,7 +98,7 @@ namespace BeamCalc.Operation
                 project.nodes[newNodeName] = project.nodes[existingNodeName];
                 project.nodes.Remove(existingNodeName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully renamed node to {newNodeName}.");
             }
@@ -110,7 +110,7 @@ namespace BeamCalc.Operation
 
             project.nodes[existingNodeName].location = newLocation;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new location for {existingNodeName} node.");
         }
@@ -121,7 +121,7 @@ namespace BeamCalc.Operation
 
             project.nodes[existingNodeName].xFixed = newFixation;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new fixation for {existingNodeName} node.");
         }
@@ -132,7 +132,7 @@ namespace BeamCalc.Operation
 
             project.nodes[existingNodeName].xForce = newForce;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new force for {existingNodeName} node.");
         }

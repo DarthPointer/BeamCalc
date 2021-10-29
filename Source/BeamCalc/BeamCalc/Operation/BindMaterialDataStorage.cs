@@ -15,7 +15,8 @@ namespace BeamCalc.Operation
         {
             paramDelegates = new Dictionary<string, Action>()
             {
-                { OperationKeys.ignoreOverwrite, () => ignoreOverwrite = true }
+                { OperationKeys.ignoreOverwrite, () => ignoreOverwrite = true },
+                { OperationKeys.ignoreSave, () => ignoreSave = true }
             };
         }
 
@@ -72,7 +73,7 @@ namespace BeamCalc.Operation
                     return true;
                 }
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully bound {relativeFilePath} material data storage to current project");
 

@@ -60,7 +60,7 @@ namespace BeamCalc.Operation
 
             if (!holder.beams.ContainsKey(beamName))
             {
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 holder.beams.Add(beamName, new BeamData()
                 {
@@ -91,7 +91,7 @@ namespace BeamCalc.Operation
             {
                 holder.beams.Remove(existingBeamName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully deleted beam {existingBeamName}.");
             }
@@ -120,7 +120,7 @@ namespace BeamCalc.Operation
                 project.beams[newBeamName] = project.beams[existingBeamName];
                 project.beams.Remove(existingBeamName);
 
-                Program.runData.unsavedChanges = true;
+                Program.ToggleChanges();
 
                 Console.WriteLine($"Successfully renamed beam to {newBeamName}.");
             }
@@ -133,7 +133,7 @@ namespace BeamCalc.Operation
 
             project.beams[existingBeamName].materialName = newMaterialName;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new material name for {existingBeamName} beam.");
         }
@@ -144,7 +144,7 @@ namespace BeamCalc.Operation
 
             project.beams[existingBeamName].crossSection = newCrossSection;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new cross section for {existingBeamName} beam.");
         }
@@ -156,7 +156,7 @@ namespace BeamCalc.Operation
 
             project.beams[existingBeamName].node1Name = newStartNodeName;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new start node name for {existingBeamName} beam.");
         }
@@ -168,7 +168,7 @@ namespace BeamCalc.Operation
 
             project.beams[existingBeamName].node2Name = newEndNodeName;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new end node name for {existingBeamName} beam.");
         }
@@ -179,7 +179,7 @@ namespace BeamCalc.Operation
 
             project.beams[existingBeamName].xLoad = newLoad;
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
             Console.WriteLine($"Successfully set new load for {existingBeamName} beam.");
         }

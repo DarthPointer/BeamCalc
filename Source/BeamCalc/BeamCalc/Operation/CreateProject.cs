@@ -53,10 +53,9 @@ namespace BeamCalc.Operation
                 Program.AddNote($"Existing file {filePath} will be overwritten next time you save changes.");
             }
 
-            Program.runData.unsavedChanges = true;
+            Program.ToggleChanges();
 
-            Program.runData.project = new Project.ProjectData(filePath);
-            Program.runData.materialDataStorage = null;
+            Program.OpenedProject = new Project.ProjectData(filePath);
 
             Console.WriteLine($"Successfully created project file {filePath}.");
 

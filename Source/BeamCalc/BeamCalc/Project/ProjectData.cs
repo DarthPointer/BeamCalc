@@ -11,15 +11,22 @@ namespace BeamCalc.Project
         public string folder;
 
         public MaterialDataStorage materialDataStorage;
+        public SolutionResultData solutionResult;
 
         [JsonProperty]
         public string relativeMaterialDataStoragePath;
+
+        [JsonProperty]
+        public string relativeSolutionResultPath;
 
         [JsonProperty]
         public Dictionary<string, NodeData> nodes;
 
         [JsonProperty]
         public Dictionary<string, BeamData> beams;
+
+        [JsonProperty]
+        public bool valid;
 
 
         public override string UserFriendlyName => "project";
@@ -36,6 +43,7 @@ namespace BeamCalc.Project
         public ProjectData(string filePath) : this()             // Only to create new storages. For filesaves, use LoadFromFile instead.
         {
             this.filePath = filePath;
+            folder = filePath.Substring(0, filePath.LastIndexOf('/') + 1);
         }
 
 
@@ -69,6 +77,7 @@ namespace BeamCalc.Project
             }
             else
             {
+                result.valid = false;
                 result.relativeMaterialDataStoragePath = "";
             }
 

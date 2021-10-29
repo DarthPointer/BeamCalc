@@ -16,6 +16,7 @@ namespace BeamCalc
             { "Validate", new Validate() },
 
             { "Help", new Help() },
+            { "CommandList", new CommandList() },
 
             { "CreateProject", new CreateProject() },
             { "LoadProject", new LoadProject() },
@@ -36,6 +37,53 @@ namespace BeamCalc
 
             { "PrintSystem", new PrintSystem() }
         };
+
+        public static void ToggleChanges()
+        {
+            runData.unsavedChanges = true;
+
+            if (TryGetActiveProject(out ProjectData project))
+            {
+                project.valid = false;
+
+                project.solutionResult = null;
+                project.relativeSolutionResultPath = "";                
+            }
+        }
+
+        public static ProjectData OpenedProject
+        {
+            set
+            {
+                UnloadFiles();
+                runData.project = value;
+            }
+        }
+
+        public static MaterialDataStorage OpenedMaterialDataStorage
+        {
+            set
+            {
+                UnloadFiles();
+                runData.materialDataStorage = value;
+            }
+        }
+
+        public static SolutionResultData OpenedSolutionResult
+        {
+            set
+            {
+                UnloadFiles();
+                runData.solutionResult = value;
+            }
+        }
+
+        public static void UnloadFiles()
+        {
+            runData.project = null;
+            runData.materialDataStorage = null;
+            runData.solutionResult = null;
+        }
 
         static void Main(string[] args)
         {

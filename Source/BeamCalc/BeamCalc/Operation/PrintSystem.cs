@@ -9,7 +9,7 @@ namespace BeamCalc.Operation
 {
     class PrintSystem : AbstractOperation
     {
-        const char nodeFree = 'x';
+        const char nodeFree = 'o';
         const char nodeFixed = 'X';
         const char beamChar = '=';
         const string forceLine = "--";
@@ -191,7 +191,15 @@ namespace BeamCalc.Operation
                 if (beam.xLoad != 0)
                 {
                     loadDisplay = DisplayedString(Math.Abs(beam.xLoad));
-                    loadLineChar = beam.xLoad > 0 ? rightLoadChar : leftLoadChar;
+
+                    if (project.nodes[beam.node1Name].location < project.nodes[beam.node2Name].location ^ beam.xLoad < 0)
+                    {
+                        loadLineChar = rightLoadChar;
+                    }
+                    else
+                    {
+                        loadLineChar = leftLoadChar;
+                    }
                 }
                 segmentWidth = Math.Max(segmentWidth, loadDisplay.Length);
 

@@ -10,10 +10,6 @@ namespace BeamCalc.Operation
 
         public abstract bool Execute(List<string> args);        // true = continue execution
 
-        protected void Readparams()
-        {
-        }
-
         protected static bool MandatoryArgumentPresense(List<string> args, string argumentName)
         {
             if (args.Count > 0)

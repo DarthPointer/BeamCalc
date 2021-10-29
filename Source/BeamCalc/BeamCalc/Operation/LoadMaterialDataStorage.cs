@@ -47,7 +47,7 @@ namespace BeamCalc.Operation
 
             try
             {
-                Program.runData.materialDataStorage = MaterialDataStorage.LoadFromFile(filePath);
+                Program.OpenedMaterialDataStorage = MaterialDataStorage.LoadFromFile(filePath);
             }
             catch (Exception e)
             {
@@ -58,8 +58,6 @@ namespace BeamCalc.Operation
             }
 
             Program.runData.unsavedChanges = false;
-
-            Program.runData.project = null;
 
             Console.WriteLine($"Successfully loaded material data storage file {filePath}.");
 

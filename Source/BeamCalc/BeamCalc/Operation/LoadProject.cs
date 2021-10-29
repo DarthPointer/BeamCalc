@@ -48,7 +48,7 @@ namespace BeamCalc.Operation
 
             try
             {
-                Program.runData.project = ProjectData.LoadFromFile(filePath);
+                Program.OpenedProject = ProjectData.LoadFromFile(filePath);
             }
             catch (Exception e)
             {
@@ -59,8 +59,6 @@ namespace BeamCalc.Operation
             }
 
             Program.runData.unsavedChanges = false;
-
-            Program.runData.materialDataStorage = null;
 
             Console.WriteLine($"Successfully loaded project file {filePath}.");
 

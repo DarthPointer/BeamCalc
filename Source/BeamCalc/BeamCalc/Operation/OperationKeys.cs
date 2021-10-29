@@ -4,5 +4,7 @@
     {
         public const string ignoreSave = "IgnoreSave";
         public const string ignoreOverwrite = "IgnoreOverwrite";
+
+        public const string forceRedo = "ForceRedo";
     }
 }

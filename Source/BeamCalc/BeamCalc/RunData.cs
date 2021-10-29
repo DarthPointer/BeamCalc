@@ -7,6 +7,7 @@ namespace BeamCalc
     {
         public ProjectData project;
         public MaterialDataStorage materialDataStorage;
+        public SolutionResultData solutionResult;
 
         public bool unsavedChanges = false;
 
