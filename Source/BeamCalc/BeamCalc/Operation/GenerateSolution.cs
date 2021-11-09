@@ -43,7 +43,28 @@ namespace BeamCalc.Operation
                     }
                 }
 
-                SolutionResultData result = Solution.Solve(project);
+                if (File.Exists(project.folder + solutionResultFilePath) && !ignoreOverwirte)
+                {
+                    Program.AddError($"Specified filepath already exists, abandoned. Use a different file path or add {OperationKeys.ignoreOverwrite} at the end.");
+                    return true;
+                }
+
+                if (File.Exists(project.folder + solutionResultFilePath))
+                {
+                    Program.AddNote($"Existing file {project.folder + solutionResultFilePath} will be overwritten next time you save changes.");
+                }
+
+                SolutionResultData result = Solution.Solve(project, solutionResultFilePath);
+
+                Program.ToggleChanges();
+
+                result.filePath = project.folder + solutionResultFilePath;
+                project.relativeSolutionResultPath = solutionResultFilePath;
+                project.solutionResult = result;
+
+                Console.WriteLine($"Project solution file {solutionResultFilePath} successfully generated. Use \"Save\" in order to write the file!");
+
+                return true;
             }
             else
             {
@@ -51,5 +72,13 @@ namespace BeamCalc.Operation
                 return true;
             }
         }
+
+        public override string BasicHelpResponse => 
+            $"Solves opened project if it is valid and assigns specified file to save the results.\n" +
+            $"\n" +
+            $"Usage:\n" +
+            $"GenerateSolution FilePath [{OperationKeys.ignoreOverwrite}]\n" +
+            $"\n" +
+            $"{OperationKeys.ignoreOverwrite}: Create new file even if the specified file path is already used.";
     }
 }

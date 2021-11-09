@@ -1,16 +1,18 @@
-﻿using BeamCalc.Project;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.IO;
-
+using BeamCalc.Project;
 
 namespace BeamCalc.Operation
 {
-    class LoadProject : AbstractParametrisedOperation
+    class LoadSolution : AbstractParametrisedOperation
     {
         bool ignoreSave;
 
-        public LoadProject()
+        public LoadSolution()
         {
             paramDelegates = new Dictionary<string, Action>()
             {
@@ -23,12 +25,11 @@ namespace BeamCalc.Operation
             args.TakeArg();
             ignoreSave = false;
 
-            if (!MandatoryArgumentPresense(args, "project path to load")) return true;
+            if (!MandatoryArgumentPresense(args, "solution result path to load")) return true;
 
             string filePath = args.TakeArg();
 
             if (!ProcessParams(args)) return true;
-
 
             if (Program.runData.unsavedChanges && !ignoreSave)
             {
@@ -48,11 +49,11 @@ namespace BeamCalc.Operation
 
             try
             {
-                Program.OpenedProject = ProjectData.LoadFromFile(filePath);
+                Program.OpenedSolutionResult = SolutionResultData.LoadFromFile(filePath);
             }
             catch (Exception e)
             {
-                Program.AddError("An exception arised in the process of loading a project.");
+                Program.AddError("An exception arised in the process of loading solution results.");
                 Program.AddError(e.Message);
 
                 return true;
@@ -60,16 +61,16 @@ namespace BeamCalc.Operation
 
             Program.runData.unsavedChanges = false;
 
-            Console.WriteLine($"Successfully loaded project file {filePath}.");
+            Console.WriteLine($"Successfully loaded solution results file {filePath}.");
 
             return true;
         }
 
         public override string BasicHelpResponse =>
-            $"Loads project from specified file.\n" +
+            $"Loads soluiton results from specified file.\n" +
             $"\n" +
             $"Usage:\n" +
-            $"LoadProject filepath [params]\n" +
+            $"LoadSolution filepath [params]\n" +
             $"\n" +
             $"Params:\n" +
             $"{OperationKeys.ignoreSave}: Disregard unsaved changes and unload current files without saving.";

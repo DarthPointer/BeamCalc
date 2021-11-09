@@ -97,7 +97,7 @@ namespace BeamCalc.Operation
             }
             else
             {
-                Program.AddError($"Beam {existingBeamName} does not exist. Make sure you typed beam name correctly and node exists.");
+                Program.AddError($"Beam {existingBeamName} does not exist. Make sure you typed beam name correctly and beam exists.");
                 return;
             }
         }

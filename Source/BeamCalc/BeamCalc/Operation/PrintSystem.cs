@@ -104,10 +104,6 @@ namespace BeamCalc.Operation
             "Usage:\n" +
             "PrintSystem LeftBorder RightBorder MetersPerChar";
 
-        public static string DisplayedString(float value)
-        {
-            return value.ToString("0.00e-0");
-        }
 
         static float BeamLocation1(BeamData beam, ProjectData project)
         {
@@ -182,7 +178,7 @@ namespace BeamCalc.Operation
 
                 int segmentWidth = 0;
 
-                string crossSectionDisplay = DisplayedString(beam.crossSection);
+                string crossSectionDisplay = StringLib.DisplayedString(beam.crossSection);
                 segmentWidth = Math.Max(segmentWidth, crossSectionDisplay.Length);
 
                 string loadDisplay = "";
@@ -190,7 +186,7 @@ namespace BeamCalc.Operation
 
                 if (beam.xLoad != 0)
                 {
-                    loadDisplay = DisplayedString(Math.Abs(beam.xLoad));
+                    loadDisplay = StringLib.DisplayedString(Math.Abs(beam.xLoad));
 
                     if (project.nodes[beam.node1Name].location < project.nodes[beam.node2Name].location ^ beam.xLoad < 0)
                     {
@@ -208,7 +204,7 @@ namespace BeamCalc.Operation
 
                 if (project.nodes[leftName].xForce > 0 && leftX >= leftPos)
                 {
-                    leftNodeForceDisplay = DisplayedString(project.nodes[leftName].xForce);
+                    leftNodeForceDisplay = StringLib.DisplayedString(project.nodes[leftName].xForce);
                     leftNodeForceArrow = forceLine + rightForce;
                 }
                 segmentWidth = Math.Max(segmentWidth, leftNodeForceDisplay.Length);
@@ -219,7 +215,7 @@ namespace BeamCalc.Operation
 
                 if (project.nodes[rightName].xForce < 0 && rightX <= rightPos)
                 {
-                    rightNodeForceDisplay = DisplayedString(Math.Abs(project.nodes[rightName].xForce));
+                    rightNodeForceDisplay = StringLib.DisplayedString(Math.Abs(project.nodes[rightName].xForce));
                     rightNodeForceArrow = leftForce + forceLine;
                 }
                 segmentWidth = Math.Max(segmentWidth, rightNodeForceDisplay.Length);
@@ -229,7 +225,7 @@ namespace BeamCalc.Operation
 
                 if (rightX <= rightPos)
                 {
-                    rightNodePosDisplay = DisplayedString(rightX);
+                    rightNodePosDisplay = StringLib.DisplayedString(rightX);
                 }
                 segmentWidth = Math.Max(segmentWidth, rightNodePosDisplay.Length);
 

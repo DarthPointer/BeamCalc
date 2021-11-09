@@ -52,9 +52,9 @@ namespace BeamCalc.Project
                 Formatting = Formatting.Indented
             });
 
-            result.filePath = filePath;
-
             result.ThrowIfInvalidSavalbeProjectElementType();
+
+            result.filePath = filePath;
 
             return result;
         }

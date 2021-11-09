@@ -55,6 +55,8 @@ namespace BeamCalc.Project
             }));
 
             if (materialDataStorage != null) materialDataStorage.Save();
+
+            if (solutionResult != null) solutionResult.Save();
         }
 
         public void BindMaterialDataStorage(MaterialDataStorage storage, string relativePath)
@@ -67,6 +69,8 @@ namespace BeamCalc.Project
         public static ProjectData LoadFromFile(string filePath)
         {
             ProjectData result = JsonConvert.DeserializeObject<ProjectData>(File.ReadAllText(filePath));
+
+            result.ThrowIfInvalidSavalbeProjectElementType();
 
             result.filePath = filePath;
             result.folder = filePath.Substring(0, filePath.LastIndexOf('/') + 1);
@@ -81,7 +85,14 @@ namespace BeamCalc.Project
                 result.relativeMaterialDataStoragePath = "";
             }
 
-            result.ThrowIfInvalidSavalbeProjectElementType();
+            if (File.Exists(result.folder + result.relativeSolutionResultPath))
+            {
+                result.solutionResult = SolutionResultData.LoadFromFile(result.folder + result.relativeSolutionResultPath);
+            }
+            else
+            {
+                result.relativeSolutionResultPath = "";
+            }
 
             return result;
         }

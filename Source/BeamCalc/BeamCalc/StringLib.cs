@@ -109,5 +109,10 @@ namespace BeamCalc
         {
             reports.Add("ERR: " + message);
         }
+
+        public static string DisplayedString(float value)
+        {
+            return value.ToString("0.00e-0");
+        }
     }
 }

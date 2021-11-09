@@ -2,6 +2,7 @@
 using BeamCalc.Project;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace BeamCalc
 {
@@ -20,6 +21,7 @@ namespace BeamCalc
 
             { "CreateProject", new CreateProject() },
             { "LoadProject", new LoadProject() },
+            { "LoadSolution", new LoadSolution() },
 
             { "Node", new Node() },
             { "Beam", new Beam() },
@@ -35,7 +37,11 @@ namespace BeamCalc
             { "PrintNodes", new PrintNodes() },
             { "PrintBeams", new PrintBeams() },
 
-            { "PrintSystem", new PrintSystem() }
+            { "PrintSystem", new PrintSystem() },
+
+            { "GenerateSolution", new GenerateSolution() },
+
+            { "PrintSection", new PrintSection() }
         };
 
         public static void ToggleChanges()
@@ -89,6 +95,44 @@ namespace BeamCalc
         {
             runData = new RunData();
 
+            if (args.Length == 1)
+            {
+                foreach (string input in File.ReadLines(args[0]))
+                {
+                    if (input.Length > 0)
+                    {
+                        List<string> inputArgs = input.Parse();
+
+                        if (inputArgs.Count > 0)
+                        {
+                            if (commands.ContainsKey(inputArgs[0]))
+                            {
+                                runData.operationReports = new List<string>();
+                                try
+                                {
+                                    commands[inputArgs[0]].Execute(inputArgs);
+
+                                    foreach (string report in runData.operationReports)
+                                    {
+                                        Console.WriteLine(report);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.ToString());
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Command {inputArgs[0]} not found");
+                            }
+                        }
+                    }
+                }
+
+                return;
+            }
+
             bool run = true;
             while (run)
             {
@@ -140,6 +184,14 @@ namespace BeamCalc
                 return true;
             }
 
+            if (runData.solutionResult != null)
+            {
+                runData.solutionResult.Save();
+                runData.unsavedChanges = false;
+
+                return true;
+            }
+
             return false;
         }
 
@@ -156,6 +208,27 @@ namespace BeamCalc
                 if (runData.project.materialDataStorage != null)
                 {
                     result = runData.project.materialDataStorage;
+                    return true;
+                }
+            }
+
+            result = null;
+            return false;
+        }
+
+        public static bool TryGetActiveSolutionResult(out SolutionResultData result)
+        {
+            if (runData.solutionResult != null)
+            {
+                result = runData.solutionResult;
+                return true;
+            }
+
+            if (runData.project != null)
+            {
+                if (runData.project.solutionResult != null)
+                {
+                    result = runData.project.solutionResult;
                     return true;
                 }
             }
