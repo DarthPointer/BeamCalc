@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd $(TargetDir)&#xD;&#xA;&#xD;&#xA;md temp&#xD;&#xA;&#xD;&#xA;copy BeamCalc.exe temp\BeamCalc.exe&#xD;&#xA;copy BeamCalc.deps.json temp\BeamCalc.deps.json&#xD;&#xA;copy BeamCalc.dll temp\BeamCalc.dll&#xD;&#xA;copy BeamCalc.runtimeconfig.json temp\BeamCalc.runtimeconfig.json&#xD;&#xA;copy Newtonsoft.Json.dll temp\Newtonsoft.Json.dll&#xD;&#xA;copy Serialize.Linq.dll temp\Serialize.Linq.dll&#xD;&#xA;&#xD;&#xA;xcopy temp ..\..\..\..\..\..\Downloadables\BeamCalc /Y&#xD;&#xA;&#xD;&#xA;rmdir temp /Q /S" />
+    <Exec Command="cd $(TargetDir)&#xD;&#xA;&#xD;&#xA;md temp&#xD;&#xA;&#xD;&#xA;copy BeamCalc.exe temp\BeamCalc.exe&#xD;&#xA;copy BeamCalc.deps.json temp\BeamCalc.deps.json&#xD;&#xA;copy BeamCalc.dll temp\BeamCalc.dll&#xD;&#xA;copy BeamCalc.runtimeconfig.json temp\BeamCalc.runtimeconfig.json&#xD;&#xA;copy Newtonsoft.Json.dll temp\Newtonsoft.Json.dll&#xD;&#xA;&#xD;&#xA;xcopy temp ..\..\..\..\..\..\Downloadables\BeamCalc /Y&#xD;&#xA;&#xD;&#xA;rmdir temp /Q /S" />
   </Target>
 
 </Project>

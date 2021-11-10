@@ -56,13 +56,6 @@ namespace BeamCalc.Operation
 
                             tableOutput.AddColumn(new string[]
                             {
-                                "Beam Name",
-                                "",
-                                beam.key
-                            }, 5);
-
-                            tableOutput.AddColumn(new string[]
-                            {
                                 "Cross Section",
                                 "",
                                 StringLib.DisplayedString(beam.crossSection)
@@ -77,7 +70,7 @@ namespace BeamCalc.Operation
 
                             tableOutput.AddColumn(new string[]
                             {
-                                "Normal Load",
+                                "Normal Stress",
                                 "",
                                 StringLib.DisplayedString(normalLoad)
                             }, 5);

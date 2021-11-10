@@ -118,6 +118,32 @@ namespace BeamCalc.Project
             public float a0;
 
             public float this[float x] => x*x*a2 + x*a1 + a0;
+
+            public float Peak => -a1 / (2 * a2);
+
+            public float Max(float left, float right)
+            {
+                float max = Math.Max(this[left], this[right]);
+
+                if (a2 != 0)
+                {
+                    max = Math.Max(max, this[Peak]);
+                }
+
+                return max;
+            }
+
+            public float Min(float left, float right)
+            {
+                float min = Math.Min(this[left], this[right]);
+
+                if (a2 != 0)
+                {
+                    min = Math.Min(min, this[Peak]);
+                }
+
+                return min;
+            }
         }
     }
 }

@@ -41,7 +41,9 @@ namespace BeamCalc
 
             { "GenerateSolution", new GenerateSolution() },
 
-            { "PrintSection", new PrintSection() }
+            { "PrintSection", new PrintSection() },
+            { "PrintSections", new PrintSections() },
+            { "PrintAnalysis", new PrintAnalysis() }
         };
 
         public static void ToggleChanges()
