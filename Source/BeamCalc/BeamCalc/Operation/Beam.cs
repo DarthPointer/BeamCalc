@@ -47,7 +47,7 @@ namespace BeamCalc.Operation
             if (!MandatoryArgumentPresense(args, "material name")) return;
             string materialName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float crossSection, "cross section")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double crossSection, "cross section")) return;
 
             if (!MandatoryArgumentPresense(args, "start node name")) return;
             string startNodeName = args.TakeArg();
@@ -55,7 +55,7 @@ namespace BeamCalc.Operation
             if (!MandatoryArgumentPresense(args, "end node name")) return;
             string endNodeName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float load, "load")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double load, "load")) return;
 
 
             if (!holder.beams.ContainsKey(beamName))
@@ -140,7 +140,7 @@ namespace BeamCalc.Operation
 
         void ChangeCrossSection(ProjectData project, string existingBeamName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newCrossSection, "new cross section")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newCrossSection, "new cross section")) return;
 
             project.beams[existingBeamName].crossSection = newCrossSection;
 
@@ -175,7 +175,7 @@ namespace BeamCalc.Operation
 
         void ChangeLoad(ProjectData project, string existingBeamName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newLoad, "new load")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newLoad, "new load")) return;
 
             project.beams[existingBeamName].xLoad = newLoad;
 

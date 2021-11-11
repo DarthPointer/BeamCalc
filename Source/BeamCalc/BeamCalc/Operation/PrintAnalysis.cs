@@ -23,8 +23,8 @@ namespace BeamCalc.Operation
                 foreach (SolutionResultData.SolutionBeam beam in solutionResult.beams)
                 {
                     MaterialData beamMaterial = solutionResult.materials[beam.materialName];
-                    float maxStress = beam.reaction.Max(0, beam.length) / beam.crossSection;
-                    float minStress = beam.reaction.Min(0, beam.length) / beam.crossSection;
+                    double maxStress = beam.reaction.Max(0, beam.length) / beam.crossSection;
+                    double minStress = beam.reaction.Min(0, beam.length) / beam.crossSection;
                     bool isOverStressed = Math.Abs(maxStress) > beamMaterial.stressLimit || Math.Abs(minStress) > beamMaterial.stressLimit;
 
                     beamNames.Add(beam.key);

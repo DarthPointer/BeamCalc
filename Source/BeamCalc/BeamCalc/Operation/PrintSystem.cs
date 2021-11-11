@@ -24,9 +24,9 @@ namespace BeamCalc.Operation
         {
             args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float leftPos, "left poistion")) return true;
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float rightPos, "right position")) return true;
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float metersPerChar, "meters per char")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double leftPos, "left poistion")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double rightPos, "right position")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double metersPerChar, "meters per char")) return true;
 
             if (metersPerChar <= 0)
             {
@@ -105,17 +105,17 @@ namespace BeamCalc.Operation
             "PrintSystem LeftBorder RightBorder MetersPerChar";
 
 
-        static float BeamLocation1(BeamData beam, ProjectData project)
+        static double BeamLocation1(BeamData beam, ProjectData project)
         {
             return project.nodes[beam.node1Name].location;
         }
 
-        static float BeamLocation2(BeamData beam, ProjectData project)
+        static double BeamLocation2(BeamData beam, ProjectData project)
         {
             return project.nodes[beam.node2Name].location;
         }
 
-        static void ProcessLeftBorder(BeamColumn leftMost, float leftPos, bool leftNodeFixed, TableOutput tableOutput)
+        static void ProcessLeftBorder(BeamColumn leftMost, double leftPos, bool leftNodeFixed, TableOutput tableOutput)
         {
             if (leftMost.leftX >= leftPos)
             {
@@ -142,9 +142,9 @@ namespace BeamCalc.Operation
             public BeamColumn leftBeam;
             public BeamColumn rightBeam;
 
-            public float leftX;
+            public double leftX;
             public string leftName;
-            public float rightX;
+            public double rightX;
             public string rightName;
 
             public BeamColumn(BeamData beam, ProjectData project)
@@ -169,10 +169,10 @@ namespace BeamCalc.Operation
                 }
             }
 
-            public List<List<string>> ToStrings(ProjectData project, float leftPos, float rightPos, float metersPerChar)
+            public List<List<string>> ToStrings(ProjectData project, double leftPos, double rightPos, double metersPerChar)
             {
-                float left = Math.Max(leftX, leftPos);
-                float right = Math.Min(rightX, rightPos);
+                double left = Math.Max(leftX, leftPos);
+                double right = Math.Min(rightX, rightPos);
 
                 int toScaleCharLength = ((int)((right - left) / metersPerChar));
 

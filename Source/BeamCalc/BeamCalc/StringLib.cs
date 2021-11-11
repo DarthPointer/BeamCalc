@@ -110,9 +110,9 @@ namespace BeamCalc
             reports.Add("ERR: " + message);
         }
 
-        public static string DisplayedString(float value)
+        public static string DisplayedString(double value)
         {
-            return value.ToString("0.00e-0");
+            return value < 0 ? value.ToString("0.000e-0") : value.ToString(" 0.000e-0");
         }
     }
 }

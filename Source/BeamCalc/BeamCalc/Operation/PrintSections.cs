@@ -16,8 +16,8 @@ namespace BeamCalc.Operation
             if (!MandatoryArgumentPresense(args, "beam name")) return true;
             string beamName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float startAtLocalCoordinate, "start at local coordinate")) return true;
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float endAtLocalCoordinate, "end at local coordinate")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double startAtLocalCoordinate, "start at local coordinate")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double endAtLocalCoordinate, "end at local coordinate")) return true;
             if (!TakeMandatoryParsedArgument(args, int.TryParse, out int sectionCount, "sections count")) return true;
 
             if (Program.TryGetActiveSolutionResult(out SolutionResultData solutionResult))
@@ -44,27 +44,32 @@ namespace BeamCalc.Operation
                             return true;
                         }
 
-                        float step = (endAtLocalCoordinate - startAtLocalCoordinate) / (sectionCount - 1);
+                        double step = (endAtLocalCoordinate - startAtLocalCoordinate) / (sectionCount - 1);
 
                         List<string> coordinates = new List<string>() { "Local Cooridnate", "" };
                         List<string> reactions = new List<string>() { "Reaction", "" };
                         List<string> normalStresses = new List<string>() { "Normal Stress", "" };
+                        List<string> overStresses = new List<string>() { "", "" };
                         List<string> offsets = new List<string>() { "Offset", "" };
+
+                        double stressLimit = solutionResult.materials[beam.materialName].stressLimit;
 
                         for (int i = 0; i < sectionCount; i++)
                         {
-                            float currentCoordinate = startAtLocalCoordinate + i * step;
+                            double currentCoordinate = startAtLocalCoordinate + i * step;
 
                             coordinates.Add(StringLib.DisplayedString(currentCoordinate));
                             reactions.Add(StringLib.DisplayedString(beam.reaction[currentCoordinate]));
                             normalStresses.Add(StringLib.DisplayedString(beam.reaction[currentCoordinate] / beam.crossSection));
+                            overStresses.Add(beam.reaction[currentCoordinate] / beam.crossSection > stressLimit ? "*" : "");
                             offsets.Add(StringLib.DisplayedString(beam.offset[currentCoordinate]));
                         }
 
                         TableOutput tableOutput = new TableOutput();
                         tableOutput.AddColumn(coordinates, 5);
                         tableOutput.AddColumn(reactions, 5);
-                        tableOutput.AddColumn(normalStresses, 5);
+                        tableOutput.AddColumn(normalStresses, 1);
+                        tableOutput.AddColumn(overStresses, 5);
                         tableOutput.AddColumn(offsets);
 
                         Console.WriteLine();

@@ -5,10 +5,10 @@ namespace BeamCalc.Project
     [JsonObject]
     class NodeData
     {
-        public float location;
+        public double location;
 
         public bool xFixed;
 
-        public float xForce;
+        public double xForce;
     }
 }

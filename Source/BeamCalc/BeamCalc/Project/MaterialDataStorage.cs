@@ -65,7 +65,7 @@ namespace BeamCalc.Project
     [JsonObject]
     class MaterialData
     {
-        public float elasticModulus;
-        public float stressLimit;
+        public double elasticModulus;
+        public double stressLimit;
     }
 }

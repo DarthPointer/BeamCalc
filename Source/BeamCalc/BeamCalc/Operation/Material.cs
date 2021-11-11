@@ -40,9 +40,9 @@ namespace BeamCalc.Operation
 
             string materialName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float elasticModulus, "elastic modulus")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double elasticModulus, "elastic modulus")) return;
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float stressLimit, "stress limit")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double stressLimit, "stress limit")) return;
 
 
             if (!holder.materials.ContainsKey(materialName))
@@ -112,7 +112,7 @@ namespace BeamCalc.Operation
 
         void ChangeElasticModulus(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newElasticModulus, "new elastic modulus")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newElasticModulus, "new elastic modulus")) return;
 
             storage.materials[existingMaterialName].elasticModulus = newElasticModulus;
 
@@ -124,7 +124,7 @@ namespace BeamCalc.Operation
 
         void ChangeStressLimit(MaterialDataStorage storage, string existingMaterialName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newStressLimit, "new stress limit")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newStressLimit, "new stress limit")) return;
 
             storage.materials[existingMaterialName].stressLimit = newStressLimit;
 

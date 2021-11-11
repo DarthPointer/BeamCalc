@@ -27,9 +27,13 @@ namespace BeamCalc.Operation
             {
                 Console.WriteLine(
                     "Usage:\n" +
+                    "\n" +
                     "Help [Command Name]\n" +
+                    "\n" +
                     "Prints help data for specified command.\n" +
-                    "Or this text if no command specified.");
+                    "Or this text if no command specified.\n" +
+                    "\n" +
+                    "Use CommandList to get the full list of available commands.");
             }
 
 

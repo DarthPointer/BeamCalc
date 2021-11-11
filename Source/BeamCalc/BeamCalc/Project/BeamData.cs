@@ -6,11 +6,11 @@ namespace BeamCalc.Project
     class BeamData
     {
         public string materialName;
-        public float crossSection;
+        public double crossSection;
 
         public string node1Name;
         public string node2Name;
 
-        public float xLoad;
+        public double xLoad;
     }
 }

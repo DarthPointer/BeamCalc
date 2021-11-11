@@ -27,7 +27,7 @@ namespace BeamCalc.Solver
                 {
                     SolutionResultData.SolutionBeam beam = solutionBeams[i];
 
-                    float matrixCoeff = project.materialDataStorage.materials[beam.materialName].elasticModulus * beam.crossSection / beam.length;
+                    double matrixCoeff = project.materialDataStorage.materials[beam.materialName].elasticModulus * beam.crossSection / beam.length;
 
                     if (!project.nodes[beam.leftNode].xFixed)
                     {
@@ -59,7 +59,7 @@ namespace BeamCalc.Solver
                 {
                     SolutionResultData.SolutionBeam beam = solutionBeams[i];
 
-                    float cumulativeReaction = beam.length * beam.AbsoluteLoad / 2;
+                    double cumulativeReaction = beam.length * beam.AbsoluteLoad / 2;
 
                     if (!project.nodes[beam.leftNode].xFixed)
                     {
@@ -73,22 +73,22 @@ namespace BeamCalc.Solver
                     }
                 }
 
-                float[] solution = offsetSolutionMatrix.GaussSolve();
+                double[] solution = offsetSolutionMatrix.GaussSolve();
 
-                IEnumerator<float> solutionEnumerator = solution.AsEnumerable().GetEnumerator();
+                IEnumerator<double> solutionEnumerator = solution.AsEnumerable().GetEnumerator();
                 solutionEnumerator.MoveNext();
 
                 foreach (SolutionResultData.SolutionBeam solutionBeam in solutionBeams)
                 {
-                    float E = project.materialDataStorage.materials[solutionBeam.materialName].elasticModulus;
-                    float A = solutionBeam.crossSection;
-                    float L = solutionBeam.length;
+                    double E = project.materialDataStorage.materials[solutionBeam.materialName].elasticModulus;
+                    double A = solutionBeam.crossSection;
+                    double L = solutionBeam.length;
 
-                    float u0 = solutionEnumerator.Current;
+                    double u0 = solutionEnumerator.Current;
                     solutionEnumerator.MoveNext();
-                    float ul = solutionEnumerator.Current;
+                    double ul = solutionEnumerator.Current;
 
-                    float q = solutionBeam.AbsoluteLoad;
+                    double q = solutionBeam.AbsoluteLoad;
 
                     solutionBeam.reaction = new SolutionResultData.SqareFunction()
                     {
@@ -126,7 +126,7 @@ namespace BeamCalc.Solver
 
         class Matrix
         {
-            float[][] body;
+            double[][] body;
             int m;
             int n;
 
@@ -135,20 +135,20 @@ namespace BeamCalc.Solver
                 this.m = m;
                 this.n = n;
 
-                body = new float[m][];
+                body = new double[m][];
 
                 for (int i = 0; i < m; i++)
                 {
-                    body[i] = new float[n];
+                    body[i] = new double[n];
                 }
             }
 
-            public void AddAt(int row, int column, float value)
+            public void AddAt(int row, int column, double value)
             {
                 body[row][column] += value;
             }
 
-            public void AddAtLastColumn(int row, float value)
+            public void AddAtLastColumn(int row, double value)
             {
                 AddAt(row, n - 1, value);
             }
@@ -158,7 +158,7 @@ namespace BeamCalc.Solver
                 return string.Join('\n', body.Select(x => string.Join(' ', x.Select(StringLib.DisplayedString))));
             }
 
-            public float[] GaussSolve()
+            public double[] GaussSolve()
             {
                 for (int i = 0; i < m - 1; i++)
                 {
@@ -170,7 +170,7 @@ namespace BeamCalc.Solver
                     Eliminate(i, i - 1);
                 }
 
-                float[] result = new float[m];
+                double[] result = new double[m];
 
                 for (int i = 0; i < m; i++)
                 {
@@ -182,13 +182,13 @@ namespace BeamCalc.Solver
 
             void Eliminate(int argIndex, int equationIndex)
             {
-                float eliminator = body[argIndex][argIndex];
-                float target = body[equationIndex][argIndex];
+                double eliminator = body[argIndex][argIndex];
+                double target = body[equationIndex][argIndex];
 
                 ApplyEquation(equationIndex, argIndex, -target / eliminator);
             }
 
-            void ApplyEquation(int targetEquationIndex, int sourceEquationIndex, float ratio)
+            void ApplyEquation(int targetEquationIndex, int sourceEquationIndex, double ratio)
             {
                 for (int i = 0; i < n; i++)
                 {

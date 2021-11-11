@@ -156,8 +156,8 @@ namespace BeamCalc.Solver
 
                     if (canTestIntersection)
                     {
-                        float left = Math.Min(project.nodes[beam.Value.node1Name].location, project.nodes[beam.Value.node2Name].location);
-                        float right = Math.Max(project.nodes[beam.Value.node1Name].location, project.nodes[beam.Value.node2Name].location);
+                        double left = Math.Min(project.nodes[beam.Value.node1Name].location, project.nodes[beam.Value.node2Name].location);
+                        double right = Math.Max(project.nodes[beam.Value.node1Name].location, project.nodes[beam.Value.node2Name].location);
 
                         foreach (var otherBeam in project.beams)
                         {

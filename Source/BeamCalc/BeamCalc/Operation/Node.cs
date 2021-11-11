@@ -37,7 +37,7 @@ namespace BeamCalc.Operation
 
             string nodeName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float location, "node location")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double location, "node location")) return;
 
 
             if (!holder.nodes.ContainsKey(nodeName))
@@ -106,7 +106,7 @@ namespace BeamCalc.Operation
 
         void Relocate(ProjectData project, string existingNodeName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newLocation, "new location")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newLocation, "new location")) return;
 
             project.nodes[existingNodeName].location = newLocation;
 
@@ -128,7 +128,7 @@ namespace BeamCalc.Operation
 
         void ChangeForce(ProjectData project, string existingNodeName, List<string> args)
         {
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float newForce, "new force")) return;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double newForce, "new force")) return;
 
             project.nodes[existingNodeName].xForce = newForce;
 

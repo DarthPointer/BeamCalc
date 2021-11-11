@@ -9,7 +9,7 @@ namespace BeamCalc.Project
     [JsonObject(memberSerialization: MemberSerialization.OptIn)]
     class SolutionResultData : SavableProjectElement
     {
-        public delegate float MathFunction(float arg);
+        public delegate double MathFunction(double arg);
 
         public string filePath;
 
@@ -62,7 +62,7 @@ namespace BeamCalc.Project
             [JsonProperty]
             public string materialName;
             [JsonProperty]
-            public float crossSection;
+            public double crossSection;
 
             [JsonProperty]
             public string key;
@@ -70,16 +70,16 @@ namespace BeamCalc.Project
             [JsonProperty]
             public bool inverted;
             [JsonProperty]
-            public float xLoad;
+            public double xLoad;
             [JsonProperty]
-            public float length;
+            public double length;
 
             [JsonProperty]
             public SqareFunction offset;
             [JsonProperty]
             public SqareFunction reaction;
 
-            public float AbsoluteLoad => inverted ? -xLoad : xLoad;
+            public double AbsoluteLoad => inverted ? -xLoad : xLoad;
 
 
             public SolutionBeam() { }
@@ -113,17 +113,17 @@ namespace BeamCalc.Project
         [JsonObject]
         public class SqareFunction
         {
-            public float a2;
-            public float a1;
-            public float a0;
+            public double a2;
+            public double a1;
+            public double a0;
 
-            public float this[float x] => x*x*a2 + x*a1 + a0;
+            public double this[double x] => x*x*a2 + x*a1 + a0;
 
-            public float Peak => -a1 / (2 * a2);
+            public double Peak => -a1 / (2 * a2);
 
-            public float Max(float left, float right)
+            public double Max(double left, double right)
             {
-                float max = Math.Max(this[left], this[right]);
+                double max = Math.Max(this[left], this[right]);
 
                 if (a2 != 0)
                 {
@@ -133,9 +133,9 @@ namespace BeamCalc.Project
                 return max;
             }
 
-            public float Min(float left, float right)
+            public double Min(double left, double right)
             {
-                float min = Math.Min(this[left], this[right]);
+                double min = Math.Min(this[left], this[right]);
 
                 if (a2 != 0)
                 {

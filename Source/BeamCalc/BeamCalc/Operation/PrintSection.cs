@@ -16,7 +16,7 @@ namespace BeamCalc.Operation
             if (!MandatoryArgumentPresense(args, "beam name")) return true;
             string beamName = args.TakeArg();
 
-            if (!TakeMandatoryParsedArgument(args, float.TryParse, out float sectionLocalCoordinate, "section local coordinate")) return true;
+            if (!TakeMandatoryParsedArgument(args, double.TryParse, out double sectionLocalCoordinate, "section local coordinate")) return true;
 
             if (Program.TryGetActiveSolutionResult(out SolutionResultData solutionResult))
             {
@@ -26,10 +26,10 @@ namespace BeamCalc.Operation
                     {
                         if (sectionLocalCoordinate >= 0 && sectionLocalCoordinate <= beam.length)
                         {
-                            float reaction = beam.inverted ? -beam.reaction[sectionLocalCoordinate] : beam.reaction[sectionLocalCoordinate];
-                            float normalLoad = reaction / beam.crossSection;
+                            double reaction = beam.inverted ? -beam.reaction[sectionLocalCoordinate] : beam.reaction[sectionLocalCoordinate];
+                            double normalLoad = reaction / beam.crossSection;
 
-                            float offset = beam.inverted ? -beam.offset[sectionLocalCoordinate] : beam.offset[sectionLocalCoordinate];
+                            double offset = beam.inverted ? -beam.offset[sectionLocalCoordinate] : beam.offset[sectionLocalCoordinate];
 
                             TableOutput tableOutput = new TableOutput();
 
